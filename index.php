@@ -20,5 +20,6 @@
          <!-- row -->
       </div>
       <!-- container-fluid -->
+      <?php include('includes/footer.php') ?>
    </body>
 </html>

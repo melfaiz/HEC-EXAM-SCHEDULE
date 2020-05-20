@@ -9,7 +9,6 @@ body {
 }
 
 
-
 /*
  * Sidebar
  */
@@ -27,6 +26,7 @@ body {
 .sidebar-sticky {
   position: -webkit-sticky;
   position: sticky;
+  padding-top: 40px !important; 
   top: 48px; /* Height of navbar */
   height: calc(100vh - 48px);
   padding: 1rem;
@@ -106,3 +106,32 @@ body {
   margin-top: 25px;
 }
 
+.sortable{
+  cursor: pointer;
+}
+
+
+
+
+/*
+
+
+CALENDAR
+
+
+*/
+
+/* calendar */
+
+.calendar{
+  width: 100%;
+}
+
+table.calendar		{ border-left:1px solid #999; }
+td.calendar-day	{  height: 100px; font-size:11px; position:relative; } * html div.calendar-day { height:80px; }
+td.calendar-day:hover	{ background:#eceff5; }
+td.calendar-day-np	{ background:#eee; min-height:80px; } * html div.calendar-day-np { height:80px; }
+td.calendar-day-head {  height: 40px;color: white;background:#2d8df4; font-weight:bold; text-align:center; padding:5px; border-bottom:1px solid #999; border-top:1px solid #999; border-right:1px solid #999; }
+div.day-number		{ background:#999; padding:5px; color:#fff; font-weight:bold; float:right; margin:-5px -5px 0 0; width:20px; text-align:center; }
+/* shared */
+td.calendar-day, td.calendar-day-np { padding:5px; border-bottom:1px solid #999; border-right:1px solid #999; }

@@ -6,4 +6,6 @@
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
    <!-- Custom styles for this template -->
    <link href="style/style.css" rel="stylesheet">
+
+   <link href="calendar.css" type="text/css" rel="stylesheet" />
 </head>
