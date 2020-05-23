@@ -63,32 +63,41 @@ echo "
 
 
 
-function exam($bdd,$list_day,$month,$year){
+function exams_list($bdd,$list_day,$month,$year){
 
     $date = $year."-".$month."-".$list_day;
     $query = "SELECT * FROM schedule 
     LEFT JOIN cours_aa
     ON cours_aa.code_cours = schedule.code_cours
-
     WHERE schedule.date='$date' 
 
     ";
     $req   = $bdd->query($query);
     
+    
     $list = [];
 
+    $i = 0;
     if ($req->rowCount()) {
-        
-       
-        while ($tuple = $req->fetch(PDO::FETCH_ASSOC)) {
-            
-            $des = $tuple['intitule'];
-            $list[$tuple['code_cours']] = $des;
-   
-            
+
+        while ($tuple = $req->fetch()) {
+
+            $exam = [];
+
+            $exam['intitule'] = $tuple['intitule'];
+            $exam['comment'] = $tuple['comment'];
+            $exam['heure'] = $tuple['heure_debut'];
+            $exam['duree'] = $tuple['duree'];
+
+            $list[$tuple['code_cours']] = $exam;
+
+            $i = $i+1;
+
         }
 
     }
+
+    
 
     return $list;
 }
@@ -129,42 +138,82 @@ function draw_calendar($bdd,$month,$year){
 		$calendar.= '<td class="calendar-day" ondrop="drop(event,\'' . $date . '\')" ondragover="allowDrop(event)"  >';
 			/* add in the day number */
             $calendar.= '<div class="day-number">'.$list_day.'</div>';
-            // $calendar.= '<div class="day-number">'.$date.'</div>';
-          
-            $exams_list = exam($bdd,$list_day,$month,$year);
 
+          
+
+
+            $list = exams_list($bdd,$list_day,$month,$year);
 
             $calendar .= '<table class="table table-sm table-striped">
             <tbody>';
-
-            foreach ($exams_list as $key => $value) {
-
-                
-                $calendar.= '<tr>';
-
-                    $calendar .= '<td>'.$key.'</td>';
-                    $calendar .= '<td>'.$value.'</td>';
-                    
-                    $calendar .= '<td><a href="delete.php?code_cours='.$key.'">
-                    <svg class="bi bi-x-circle-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M16 8A8 8 0 110 8a8 8 0 0116 0zm-4.146-3.146a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z" clip-rule="evenodd"/>
-                    </svg>
-                    </a></td>';
-
-                $calendar.= '</tr>';
-
-
-
-            }
-
-            $calendar.= '  </tbody>
-            </table>';
             
            
+            foreach ($list as $code => $array) {
+                 
+                $exam = $array;                
+               
+                $calendar.= '<tr>';
+    
+                    $calendar .= '<td>'. $code.'</td>';
+                   
+                    $calendar .= '<td>'. shorten_text($exam['intitule']).'...</td>';
+
+                    $calendar .=  '<td><a href="" data-toggle="modal" data-target="#'. $code .'">'. comment_icon() .'</a></td>';
+
+                    $calendar .=  '<td><a href="delete.php?code_cours='.$code.'">'. delete_icon() .'</a></td>';
+
+                    $myDateTime = DateTime::createFromFormat('H:i:s', $exam['heure']);
+                    $time = $myDateTime->format('H:i');
+                    
+                    $calendar .= '
+                    <div class="modal fade" id="'. $code .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">'. $code . ' : '.$exam['intitule']  .'</h5>
+                          </div>
+
+                          <div class="modal-body">
+                          
+                          <p> <h6>Heure: </h6>'. $time .' </p>
+                          <p> <h6>Commenatire: </h6>'. $exam['comment'] .' </p>
+
+
+                          <form>
+
+                          <div class="form-group">
+                            <label for="exampleInputPassword1">Rentrer votre commentaire</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                          </div>
+
+                        </form>
+
+
+                        </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>';
+    
+                    
+    
+                $calendar.= '</tr>';
+                
+    
+                
+            }
+    
+            $calendar.= '  </tbody>
+            </table>';
 
 
 
-        $calendar.= '</td>';
+            $calendar.= '</td>';
         
 
 
@@ -194,6 +243,25 @@ function draw_calendar($bdd,$month,$year){
 	
 	/* all done, return result */
 	return $calendar;
+}
+
+function delete_icon(){
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 16" width="12" height="16"><path fill-rule="evenodd" d="M11 2H9c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1H2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1v9c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 12H3V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9zm1-10H2V3h9v1z"></path></svg>';
+}
+
+function comment_icon(){
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 16" width="12" height="16"><path fill-rule="evenodd" d="M6 5H2V4h4v1zM2 8h7V7H2v1zm0 2h7V9H2v1zm0 2h7v-1H2v1zm10-7.5V14c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V2c0-.55.45-1 1-1h7.5L12 4.5zM11 5L8 2H1v12h10V5z"></path></svg>';
+}
+
+function shorten_text($text){
+
+    if (strlen($text) < 20) {
+        return $text;
+    }else{
+        return substr($text,0,20)."..." ;
+    }
+
+
 }
 
 

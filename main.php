@@ -81,12 +81,8 @@ if ( isset( $_SESSION['month']) && isset( $_SESSION['year'])) {
 
 <?php
 
-
-
-
 echo draw_calendar($bdd,$month,$year);
 
-// session_destroy();
 ?>
 
 
