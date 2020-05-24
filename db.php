@@ -9,7 +9,7 @@ $dsn = "mysql:host={$dbhost};dbname={$dbname};charset={$charset}";
 $username = 'root';
 $password = '';
 
-$bdd = new PDO($dsn, $username, $password,array('PDO::ATTR_PERSISTENT' => confitem('database', 'pconnect')));
+$bdd = new PDO($dsn, $username, $password,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8") );
 
 
 
