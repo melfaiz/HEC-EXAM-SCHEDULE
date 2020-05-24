@@ -94,6 +94,8 @@ if(isset($_SESSION['annee']) && isset($_SESSION['bloc']) && isset($_SESSION['ses
 </div>
    
    <button type="submit" class="btn btn-primary btn-lg btn-block">Rechercher</button>
+   <a href="logout.php" class="btn btn-danger btn-lg btn-block ">Se deconnecter</a>
+
 </form>
 
 
@@ -110,4 +112,6 @@ if(isset($_SESSION['annee']) && isset($_SESSION['bloc']) && isset($_SESSION['ses
        echo "</div>";
    
 ?>
+
+
 

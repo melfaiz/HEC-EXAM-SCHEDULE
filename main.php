@@ -64,8 +64,6 @@ if ( isset( $_SESSION['month']) && isset( $_SESSION['year'])) {
 
 <form method="POST" action="">
 
-
-
     <div class="input-group mb-3">
         <input type="month" name="date" min="2018-01" value="<?php echo $year."-".$month; ?>" class="form-control"  aria-describedby="button-addon2">
         <div class="input-group-append">
@@ -76,8 +74,41 @@ if ( isset( $_SESSION['month']) && isset( $_SESSION['year'])) {
 </form>
 
 
+<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="insertModaltitle"></h5>
+      </div>
 
+      <div class="modal-body">
+      
 
+      <form action="append.php" method='GET'>
+
+        <input type="hidden" class="form-control" id="insertModalDate" name="date" value="">
+        <input type="hidden" class="form-control" id="insertModalCours" name="cours" value="">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Heure</label>
+            <input type="time" class="form-control" id="insertModalHeure" value="08:00" name="heure">
+          </div>
+
+            <div class="form-group">
+              <label for="exampleInputPassword1">Rentrer votre commentaire</label>
+              <textarea class="form-control" name="comment" id="insertModalComment" rows="3"></textarea>
+            </div>
+
+          </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            </form>
+
+    </div>
+  </div>
+</div>
+    
 
 <?php
 
@@ -95,6 +126,7 @@ function allowDrop(ev) {
 
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
+  
 }
 
 function drop(ev,date) {
@@ -107,8 +139,13 @@ function drop(ev,date) {
 
 
   ev.target.children[1].appendChild(x);
+  
+  $('#insertModaltitle').text(data);
+  $('#insertModalDate').val(date); 
+  $('#insertModalCours').val(data); 
+  $('#insertModal').modal('show'); 
 
-  window.open("append.php?class="+data+"&time="+date,"_self");
+  // window.open("append.php?class="+data+"&time="+date,"_self");
 
 }
 

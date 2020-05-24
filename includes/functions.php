@@ -156,7 +156,7 @@ function draw_calendar($bdd,$month,$year){
     
                     $calendar .= '<td>'. $code.'</td>';
                    
-                    $calendar .= '<td>'. shorten_text($exam['intitule']).'...</td>';
+                    $calendar .= '<td>'. shorten_text($exam['intitule']).'</td>';
 
                     $calendar .=  '<td><a href="" data-toggle="modal" data-target="#'. $code .'">'. comment_icon() .'</a></td>';
 
@@ -170,31 +170,23 @@ function draw_calendar($bdd,$month,$year){
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">'. $code . ' : '.$exam['intitule']  .'</h5>
+                            <h4 class="modal-title" id="exampleModalLabel">'. $code . ' : '.$exam['intitule']  .'</h4>
                           </div>
 
                           <div class="modal-body">
                           
-                          <p> <h6>Heure: </h6>'. $time .' </p>
-                          <p> <h6>Commenatire: </h6>'. $exam['comment'] .' </p>
+                          <p> <h5>Heure: </h5><h6>'. $time .' </h6></p>
+                          <p> <h5>Commentaires: </h5><h6>'. $exam['comment'] .' </h6></p>
 
 
                           <form>
-
-                          <div class="form-group">
-                            <label for="exampleInputPassword1">Rentrer votre commentaire</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                          </div>
 
                         </form>
 
 
                         </div>
 
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                          </div>
+
 
                         </div>
                       </div>
@@ -265,13 +257,13 @@ function shorten_text($text){
 }
 
 
-function append_exam($bdd,$cours_aa,$date){
+function append_exam($bdd,$cours_aa,$date,$heure,$comment){
 
-    $sql = "INSERT INTO schedule (code_cours, date) VALUES (?,?)";
+    $sql = "INSERT INTO schedule (code_cours, date,heure_debut,comment) VALUES (?,?,?,?)";
 
     $stmt= $bdd->prepare($sql);
 
-    $stmt->execute([$cours_aa, $date]);
+    $stmt->execute([$cours_aa, $date,$heure,$comment]);
 
     $sql = "UPDATE cours_aa SET exam = 1 WHERE code_cours='$cours_aa'";
 
