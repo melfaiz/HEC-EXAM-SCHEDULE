@@ -2,7 +2,7 @@
 <?php include('includes/functions.php'); ?>
 <!DOCTYPE html>
 <!-- saved from url=(0053)https://getbootstrap.com/docs/4.0/examples/dashboard/ -->
-<html lang="en">
+<html lang="fr">
    <?php include('includes/head.php') ?>
    <body>
       <?php include('includes/navbar.php') ?>

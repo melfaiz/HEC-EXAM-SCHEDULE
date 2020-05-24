@@ -3,13 +3,14 @@
 
 $dbhost = 'localhost';
 $dbname = 'hec_exam_schedule';
-$charset = 'utf8' ;
 
-$dsn = "mysql:host={$dbhost};dbname={$dbname};charset={$charset}";
+$dsn = "mysql:host={$dbhost};dbname={$dbname}";
 $username = 'root';
 $password = '';
 
-$bdd = new PDO($dsn, $username, $password,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8") );
+$bdd = new PDO($dsn, $username, $password );
+$bdd->query("SET NAMES utf8");
+
 
 
 
