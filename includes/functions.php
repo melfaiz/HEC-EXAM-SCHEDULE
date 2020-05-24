@@ -257,13 +257,13 @@ function shorten_text($text){
 }
 
 
-function append_exam($bdd,$cours_aa,$date,$heure,$comment){
+function append_exam($bdd,$cours_aa,$date,$heure,$duree,$comment){
 
-    $sql = "INSERT INTO schedule (code_cours, date,heure_debut,comment) VALUES (?,?,?,?)";
+    $sql = "INSERT INTO schedule (code_cours, date,heure_debut,duree,comment) VALUES (?,?,?,?,?)";
 
     $stmt= $bdd->prepare($sql);
 
-    $stmt->execute([$cours_aa, $date,$heure,$comment]);
+    $stmt->execute([$cours_aa, $date,$heure,$duree,$comment]);
 
     $sql = "UPDATE cours_aa SET exam = 1 WHERE code_cours='$cours_aa'";
 

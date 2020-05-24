@@ -11,7 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $date = $_GET['date'];
         $heure = $_GET['heure'];
         $comment = $_GET['comment'];
-        append_exam($bdd,$cours,$date,$heure,$comment);
+        $duree = $_GET['duree'];
+        append_exam($bdd,$cours,$date,$heure,$duree,$comment);
 
         header('Location:index.php');
 
