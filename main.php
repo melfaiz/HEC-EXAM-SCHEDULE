@@ -45,6 +45,9 @@
       </div>
    </div>
 </form>
+
+<!-- popup lors de l'insertion d'un cours  -->
+
 <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -75,6 +78,9 @@
       </div>
    </div>
 </div>
+
+
+
 
 <?php
    echo draw_calendar($bdd,$month,$year);
