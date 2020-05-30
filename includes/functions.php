@@ -327,7 +327,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
             echo "<tbody>";
             $id=1;
             while ($tuple = $req->fetch()) {
-                echo "<tr id='".$tuple['code_cours']."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
+                echo "<tr data-partim='true' id='".$tuple['code_cours']."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
                 echo "<td>" .$tuple['code_cours']."</td>";
                 echo "<td>" .$tuple['intitule']."</td></tr>";
                 $id++;
@@ -338,7 +338,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                     $req_meanwhile=$bdd->query($query_meanwhile);
                     if($req_meanwhile->rowCount()){
                         while ($tuple_meanwhile=$req_meanwhile->fetch()){
-                            echo "<tr data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
+                            echo "<tr data-toggle='tooltip'  data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
                             echo "<td style='color: red;'>Liaison: </td>";
                             echo "<td style='color: red;'>".$tuple_meanwhile['intitule']."</td></tr>";
                         }

@@ -39,7 +39,7 @@
 <h3>Choisir le mois:</h3>
 <form method="POST" action="">
    <div class="input-group mb-3">
-      <input type="month" name="date" min="2018-01" value="<?php echo $year."-".$month; ?>" class="form-control"  aria-describedby="button-addon2">
+      <input type="month" id="aaaaaa" name="date" min="2018-01" value="<?php echo $year."-".$month; ?>" class="form-control"  aria-describedby="button-addon2">
       <div class="input-group-append">
          <button class="btn btn-outline-secondary" type="submit" id="button-addon2" name="action" value="date">Choisir</button>
       </div>
@@ -70,6 +70,9 @@
                   <label for="exampleInputPassword1">Rentrer votre commentaire</label>
                   <textarea class="form-control" name="comment" id="insertModalComment" rows="3"></textarea>
                </div>
+
+
+
          </div>
          <div class="modal-footer">
          <button type="submit" class="btn btn-primary">Save</button>

@@ -1,7 +1,5 @@
 <?php 
 
-session_start();
-// session_destroy();
 
 $annee = "20192020";
 $quadri = "Janvier";
