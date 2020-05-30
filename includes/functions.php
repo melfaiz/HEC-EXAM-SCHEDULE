@@ -346,7 +346,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                         if($tuple['exam']==1){
                             echo "<tr>";
                             echo "<td style='background-color:red;'></td>";
-                            echo "<td>exam azbi</td>";
+                            echo "<td></td>";
                             echo "<td>" .$tuple['code_cours']."</td>";
                             echo "<td>" .$tuple['intitule']."</td></tr>";
                         }
