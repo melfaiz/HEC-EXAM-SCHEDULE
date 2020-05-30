@@ -435,7 +435,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                         if($req_partim->rowCount()){
                             while ($tuple_partim=$req_partim->fetch()){
                                 $partim_id=$tuple_partim['id_partim'];
-                                $query_partim_intitule="SELECT partim_aa.partim FROM partim_aa WHERE partim_aa.id_partim_aa='$partim_id'";
+                                $query_partim_intitule="SELECT * FROM partim_aa WHERE partim_aa.id_partim_aa='$partim_id'";
                                 $req_partim_intitule=$bdd->query($query_partim_intitule);
                                 if($req_partim_intitule->rowCount()){
                                     while ($tuple_partim_intitule=$req_partim_intitule->fetch()){
