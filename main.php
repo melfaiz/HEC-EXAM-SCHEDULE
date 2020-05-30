@@ -34,12 +34,18 @@
        $month = $_SESSION['month'];
    
    }
-   
+
+
+
+echo $annee;  
    ?>
+
+
+
 <h3>Choisir le mois:</h3>
 <form method="POST" action="">
    <div class="input-group mb-3">
-      <input type="month" id="aaaaaa" name="date" min="2018-01" value="<?php echo $year."-".$month; ?>" class="form-control"  aria-describedby="button-addon2">
+      <input type="month" name="date" min="2018-01" value="<?php echo $year."-".$month; ?>" class="form-control"  aria-describedby="button-addon2">
       <div class="input-group-append">
          <button class="btn btn-outline-secondary" type="submit" id="button-addon2" name="action" value="date">Choisir</button>
       </div>

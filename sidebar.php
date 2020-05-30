@@ -1,11 +1,6 @@
 <?php 
 
 
-$annee = "20192020";
-$quadri = "Janvier";
-$bloc = 0;
-$programme = "Bachelier en sciences économiques et de gestion";
-
 if(isset($_POST['annee']) && !empty($_POST['annee']) && isset($_POST['bloc']) && !empty($_POST['bloc']) && isset($_POST['session']) && !empty($_POST['session']) && isset($_POST['programme']) && !empty($_POST['programme'])){
 
    $annee = $_POST['annee'];
@@ -29,6 +24,18 @@ if(isset($_SESSION['annee']) && isset($_SESSION['bloc']) && isset($_SESSION['ses
   $programme = $_SESSION['programme'];
   
   
+  }else{
+
+    $_SESSION['annee'] = "20192020";
+    $_SESSION['session'] = "Janvier";
+    $_SESSION['bloc'] = 1;
+    $_SESSION['programme'] = "Bachelier en sciences économiques et de gestion";
+
+    $annee = $_SESSION['annee'];
+    $bloc = $_SESSION['bloc'];
+    $quadri = $_SESSION['session'];
+    $programme = $_SESSION['programme'];
+      
   }
 
 
