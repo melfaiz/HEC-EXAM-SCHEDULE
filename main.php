@@ -59,6 +59,9 @@
             <h5 class="modal-title" id="insertModaltitle"></h5>
          </div>
          <div class="modal-body">
+
+         <div id="insertModalAlert"></div>
+
             <form action="append.php" method='GET'>
                <input type="hidden" class="form-control" id="insertModalDate" name="date" value="">
                <input type="hidden" class="form-control" id="insertModalCours" name="cours" value="">

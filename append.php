@@ -13,9 +13,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $heure = $_GET['heure'];
         $comment = $_GET['comment'];
         $duree = $_GET['duree'];
-        append_exam($bdd,$cours,$date,$heure,$duree,$comment);
 
-        header('Location:index.php');
+
+        // LES TESTS 
+
+        $query="SELECT * FROM schedule WHERE date = '$date' AND heure_debut = '$heure' ";
+        $req=$bdd->query($query);
+        if($req->rowCount()){
+
+                echo "OVERLAP";
+
+                // UN MESSAGE
+                
+
+        }else{ // SI TOUT EST OK
+                append_exam($bdd,$cours,$date,$heure,$duree,$comment);
+                header('Location:index.php');
+        }
+
+
+        
+
+        
 
 }
 

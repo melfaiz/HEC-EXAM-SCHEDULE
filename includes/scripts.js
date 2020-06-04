@@ -3,14 +3,33 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
+    ev.dataTransfer.setData("id", ev.target.id);
+    ev.dataTransfer.setData("partim", ev.target.dataset.partim);
+    ev.dataTransfer.setData("liaison", ev.target.dataset.liaison);
+
+
+}
+
+function trPartim(code) {
+    var tr = document.getElementById(code);
+    tr.dataset.partim = true
+}
+
+function trLiaison(code) {
+    var tr = document.getElementById(code);
+    tr.dataset.liaison = true
 }
 
 function drop(ev, date) {
 
     ev.preventDefault();
+    var data = ev.dataTransfer.getData("id");
 
-    var data = ev.dataTransfer.getData("text");
+
+    var partim = ev.dataTransfer.getData("partim");
+    var liaison = ev.dataTransfer.getData("liaison");
+
+
 
     var tr = document.getElementById(data);
 
@@ -23,15 +42,36 @@ function drop(ev, date) {
     tr.appendChild(com)
     tr.appendChild(del)
 
+    var top = ev.target.children[1].children[0]
 
-    ev.target.children[1].children[0].appendChild(tr);
+    top.appendChild(tr);
 
-    $('#insertModaltitle').text("Id du cours: " + data);
+    if (partim == "true") {
+
+        var div = document.getElementById('insertModalAlert');
+        div.innerHTML = '<div  class="alert alert-warning" role="alert">Pensez a preciser les partims dans le commentaire !</div>';
+
+    }
+    if (liaison == "true") {
+
+        var div = document.getElementById('insertModalAlert');
+        div.innerHTML = '<div  class="alert alert-warning" role="alert">Ce cours a des liaisons !</div>';
+
+    }
+
+    $('#insertModaltitle').text("Code du cours: " + data);
     $('#insertModalDate').val(date);
     $('#insertModalCours').val(data);
 
     $('#insertModal').on('hidden.bs.modal', function() {
+
+
+        // top.removeChild(top.lastChild);
+        // updateDiv()
         location.reload();
+
+
+
     })
 
 
@@ -40,6 +80,11 @@ function drop(ev, date) {
 
 }
 
+function updateDiv() {
+
+    $('#sidebar_liste_programmes').load(location.href + " #sidebar_liste_programmes");
+
+}
 // function sendData(data) {
 
 //   // sendData({ class : data , time : date ,action:'addcourse' });

@@ -67,32 +67,32 @@ echo "
 function exams_list($bdd,$list_day,$month,$year){
 
     $date = $year."-".$month."-".$list_day;
-    $query = "SELECT * FROM schedule 
-    LEFT JOIN cours_aa
-    ON cours_aa.code_cours = schedule.code_cours
+    $query = "SELECT DISTINCT * 
+
+    FROM schedule INNER JOIN cours_aa
+    ON schedule.code_cours = cours_aa.code_cours
     WHERE schedule.date='$date' 
+    GROUP BY schedule.date, schedule.code_cours , schedule.heure_debut , schedule.duree
 
     ";
     $req   = $bdd->query($query);
     
-    
     $list = [];
 
-    $i = 0;
     if ($req->rowCount()) {
 
-        while ($tuple = $req->fetch()) {
-
+        while ($tuple = $req->fetch()) {           
+            
             $exam = [];
-
+            $exam['code_cours'] = $tuple['code_cours'];
             $exam['intitule'] = $tuple['intitule'];
             $exam['comment'] = $tuple['comment'];
             $exam['heure'] = $tuple['heure_debut'];
             $exam['duree'] = $tuple['duree'];
 
-            $list[$tuple['code_cours']] = $exam;
+            array_push($list,$exam);
 
-            $i = $i+1;
+
 
         }
 
@@ -148,26 +148,28 @@ function draw_calendar($bdd,$month,$year){
             $calendar .= '<table class="table table-sm table-striped">
             <tbody>';
             
-           
-            foreach ($list as $code => $array) {
+
+            for ($i=0; $i < sizeof($list) ; $i++) { 
                  
-                $exam = $array;                
-               
+                $exam = $list[$i];
+                $code = $exam['code_cours'];    
+                $heure = $exam['heure'];               
+                
                 $calendar.= '<tr>';
     
                     $calendar .= '<td>'. $code.'</td>';
                    
                     $calendar .= '<td>'. shorten_text($exam['intitule']).'</td>';
 
-                    $calendar .=  '<td><a href="" data-toggle="modal" data-target="#'. $code.$date .'-popup">'. comment_icon() .'</a></td>';
+                    $calendar .=  '<td><a href="" data-toggle="modal" data-target="#'. $code.$date.$heure .'-popup">'. comment_icon() .'</a></td>';
 
-                    $calendar .=  '<td><a href="delete.php?code_cours='.$code.'&date='.$date.'">'. delete_icon() .'</a></td>';
+                    $calendar .=  '<td><a href="delete.php?code_cours='.$code.'&date='.$date.'&heure='.$heure.'">'. delete_icon() .'</a></td>';
 
                     $myDateTime = DateTime::createFromFormat('H:i:s', $exam['heure']);
                     $time = $myDateTime->format('H:i');
                     
                     $calendar .= '
-                    <div class="modal fade" id="'. $code.$date .'-popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="'. $code.$date.$heure .'-popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -275,9 +277,9 @@ function append_exam($bdd,$cours_aa,$date,$heure,$duree,$comment){
 
 }
 
-function delete_exam($bdd,$cours,$date){
+function delete_exam($bdd,$cours,$date,$heure){
 
-    $sql = "DELETE FROM schedule WHERE code_cours='$cours' and date='$date'";
+    $sql = "DELETE FROM schedule WHERE code_cours='$cours' and date='$date' and heure_debut='$heure' ";
 
     $stmt= $bdd->prepare($sql);
 
@@ -300,7 +302,6 @@ function delete_exam($bdd,$cours,$date){
 
 
 }
-
 
 function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
 {
@@ -337,19 +338,20 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
             echo "<tbody>";
             while ($tuple = $req->fetch()) {
                 $id_cours=$tuple['id_cours_aa'];
+                $code_cours=$tuple['code_cours'];
                 $query_fin = "SELECT * FROM cours_aa, cours_aa_pgm, pgm_finalite_aa, programme_aa WHERE cours_aa.id_cours_aa='$id_cours' AND cours_aa_pgm.id_cours_aa=cours_aa.id_cours_aa AND cours_aa_pgm.id_pgm_finalite_aa=pgm_finalite_aa.id_pgm_finalite_aa AND cours_aa_pgm.bloc='$bloc' AND programme_aa.id_programme_aa=(SELECT programme_aa.id_programme_aa FROM programme_aa WHERE programme_aa.programme_long='$programme' AND programme_aa.aa='$annee') AND cours_aa_pgm.id_programme_aa=programme_aa.id_programme_aa" ;
                 $req_fin = $bdd->query($query_fin);
                 if ($req_fin->rowCount()) {
                     while ($tuple_fin = $req_fin->fetch()) {
                         if($tuple['exam']==0){
-                            echo "<tr id='".$tuple['code_cours']."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Finalité: ".$tuple_fin['finalite']."'>";
+                            echo "<tr data-partim='false' data-liaison='false' id='".$tuple['code_cours']."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Finalité: ".$tuple_fin['finalite']."'>";
                             echo "<td style='background-color:green;'></td>";
                             echo "<td></td>";
                             echo "<td>" .$tuple['code_cours']."</td>";
                             echo "<td>" .$tuple['intitule']."</td></tr>";
                         }
                         if($tuple['exam']==1){
-                            echo "<tr id='".$tuple['code_cours']."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Finalité: ".$tuple_fin['finalite']."'>";
+                            echo "<tr data-partim='false' data-liaison='false' id='".$tuple['code_cours']."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Finalité: ".$tuple_fin['finalite']."'>";
                             echo "<td style='background-color:red;'></td>";
                             echo "<td></td>";
                             echo "<td>" .$tuple['code_cours']."</td>";
@@ -363,7 +365,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                                 while ($tuple_meanwhile=$req_meanwhile->fetch()){
                                     echo "<tr>";
                                     echo "<td></td>";
-                                    echo "<td></td>";
+                                    echo "<td><script> trLiaison('".$tuple['code_cours']."') </script></td>";
                                     echo "<td style='color: red;'>Liaison: </td>";
                                     echo "<td style='color: red;'>".$tuple_meanwhile['intitule']."</td></tr>";
                                 }
@@ -383,17 +385,17 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                                     if($req_partim_intitule->rowCount()){
                                         while ($tuple_partim_intitule=$req_partim_intitule->fetch()){
                                             if($tuple_partim_intitule['exam']==0){
-                                                echo "<tr id='".$code_cours_partim."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
+                                                echo "<tr id='".$code_cours_partim."' draggable='false' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
                                                 echo "<td></td>";
-                                                echo "<td></td>";
+                                                echo "<td><script> trPartim('".$tuple['code_cours']."') </script></td>";
                                                 // echo "<td style='background-color:green;'></td>";
                                                 echo "<td style='color: red;'>Partim: </td>";
                                                 echo "<td style='color: red;'>".$tuple_partim_intitule['partim']."</td></tr>";
                                             }
                                             if($tuple_partim_intitule['exam']==1){
-                                                echo "<tr id='".$code_cours_partim."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
+                                                echo "<tr id='".$code_cours_partim."' draggable='false' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
                                                 echo "<td></td>";
-                                                echo "<td></td>";
+                                                echo "<td><script> trPartim('".$tuple['code_cours']."') </script></td>";
                                                 // echo "<td style='background-color:red;'></td>";
                                                 echo "<td style='color: red;'>Partim: </td>";
                                                 echo "<td style='color: red;'>".$tuple_partim_intitule['partim']."</td></tr>";
@@ -450,14 +452,14 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                                         if($tuple_partim_intitule['exam']==0){
                                             echo "<tr >";
                                             echo "<td></td>";
-                                            echo "<td style='background-color:green;'></td>";
+                                            echo "<td ></td>";
                                             echo "<td style='color: red;'>Partim: </td>";
                                             echo "<td style='color: red;'>".$tuple_partim_intitule['partim']."</td></tr>";
                                         }
                                         if($tuple_partim_intitule['exam']==1){
                                             echo "<tr >";
                                             echo "<td></td>";
-                                            echo "<td style='background-color:red;'></td>";
+                                            echo "<td ></td>";
                                             echo "<td style='color: red;'>Partim: </td>";
                                             echo "<td style='color: red;'>".$tuple_partim_intitule['partim']."</td></tr>";
                                         }
