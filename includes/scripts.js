@@ -13,11 +13,13 @@ function drag(ev) {
 function trPartim(code) {
     var tr = document.getElementById(code);
     tr.dataset.partim = true
+    console.log("DONE")
 }
 
 function trLiaison(code) {
     var tr = document.getElementById(code);
     tr.dataset.liaison = true
+    console.log("DONE")
 }
 
 function drop(ev, date) {

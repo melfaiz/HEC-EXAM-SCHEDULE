@@ -431,7 +431,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                             while ($tuple_meanwhile=$req_meanwhile->fetch()){
                                 echo "<tr>";
                                 echo "<td></td>";
-                                echo "<td></td>";
+                                echo "<td><script> trLiaison('".$tuple['code_cours']."') </script></td>";
                                 echo "<td style='color: red;'>Liaison: </td>";
                                 echo "<td style='color: red;'>".$tuple_meanwhile['intitule']."</td></tr>";
                             }
@@ -452,14 +452,14 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                                         if($tuple_partim_intitule['exam']==0){
                                             echo "<tr >";
                                             echo "<td></td>";
-                                            echo "<td ></td>";
+                                            echo "<td ><script> trPartim('".$tuple['code_cours']."') </script></td>";
                                             echo "<td style='color: red;'>Partim: </td>";
                                             echo "<td style='color: red;'>".$tuple_partim_intitule['partim']."</td></tr>";
                                         }
                                         if($tuple_partim_intitule['exam']==1){
                                             echo "<tr >";
                                             echo "<td></td>";
-                                            echo "<td ></td>";
+                                            echo "<td ><script> trPartim('".$tuple['code_cours']."') </script></td>";
                                             echo "<td style='color: red;'>Partim: </td>";
                                             echo "<td style='color: red;'>".$tuple_partim_intitule['partim']."</td></tr>";
                                         }
