@@ -39,6 +39,20 @@ if(isset($_SESSION['annee']) && isset($_SESSION['bloc']) && isset($_SESSION['ses
   }
 
 
+
+
+if (isset($_POST['version'])) {
+  $_SESSION['version'] = $_POST['version'];
+}
+
+if (isset($_SESSION['version'])) {
+  $version = $_SESSION['version'];
+  
+}else{
+  $version = "schedule1";
+  $_SESSION['version'] = $version;
+}
+
 ?>
 
 
@@ -97,7 +111,18 @@ if(isset($_SESSION['annee']) && isset($_SESSION['bloc']) && isset($_SESSION['ses
             <option value='Septembre' <?php if ($quadri == "Septembre")echo "selected" ?>>Septembre</option>
         </select>
 </div>
-   
+
+<div class="form-group">
+
+       <select name='version' class="form-control">
+           <option value='schedule1' <?php if ($version == "schedule1")echo "selected" ?>>Version 1</option>
+           <option value='schedule2' <?php if ($version == "schedule2")echo "selected" ?>>Version 2</option>
+           <option value='schedule3' <?php if ($version == "schedule3")echo "selected" ?>>Version 3</option>
+       </select>
+      
+
+</div>
+
    <button type="submit" class="btn btn-primary btn-lg btn-block">Rechercher</button>
    <a href="logout.php" class="btn btn-danger btn-lg btn-block ">Se deconnecter</a>
 

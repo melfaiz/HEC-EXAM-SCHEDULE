@@ -1,4 +1,6 @@
 <?php
+
+
    $year = "2020";
    $month = "05";
    
@@ -16,14 +18,7 @@
    
        }
    
-     }
-   
-     if ( isset($_POST['action']) && $_POST['action'] == 'append') {
-   
-         echo " <h1> holiaa  </h1> ";
-       
-     }
-       
+     }     
    
    }
    

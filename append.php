@@ -14,11 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $comment = $_GET['comment'];
         $duree = $_GET['duree'];
 
+        
+
 
         // LES TESTS 
 
         $query="SELECT * FROM schedule WHERE date = '$date' AND heure_debut = '$heure' ";
         $req=$bdd->query($query);
+
         if($req->rowCount()){
 
                 echo "OVERLAP";

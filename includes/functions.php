@@ -66,12 +66,14 @@ echo "
 
 function exams_list($bdd,$list_day,$month,$year){
 
+    global $version;
+
     $date = $year."-".$month."-".$list_day;
     $query = "SELECT DISTINCT * 
 
     FROM schedule INNER JOIN cours_aa
     ON schedule.code_cours = cours_aa.code_cours
-    WHERE schedule.date='$date' 
+    WHERE schedule.date='$date' and version = '$version'
     GROUP BY schedule.date, schedule.code_cours , schedule.heure_debut , schedule.duree
 
     ";
@@ -260,12 +262,14 @@ function shorten_text($text){
 
 
 function append_exam($bdd,$cours_aa,$date,$heure,$duree,$comment){
+    
+    global $version;
 
-    $sql = "INSERT INTO schedule (code_cours, date,heure_debut,duree,comment) VALUES (?,?,?,?,?)";
+    $sql = "INSERT INTO schedule (code_cours, date,heure_debut,duree,comment,version) VALUES (?,?,?,?,?,?)";
 
     $stmt= $bdd->prepare($sql);
 
-    $stmt->execute([$cours_aa, $date,$heure,$duree,$comment]);
+    $stmt->execute([$cours_aa, $date,$heure,$duree,$comment,$version]);
 
     $annee = $_SESSION['annee'];
     $sql = "UPDATE cours_aa SET exam = '1' WHERE code_cours='$cours_aa' AND aa='$annee'";
@@ -279,7 +283,9 @@ function append_exam($bdd,$cours_aa,$date,$heure,$duree,$comment){
 
 function delete_exam($bdd,$cours,$date,$heure){
 
-    $sql = "DELETE FROM schedule WHERE code_cours='$cours' and date='$date' and heure_debut='$heure' ";
+    global $version;
+
+    $sql = "DELETE FROM schedule WHERE code_cours='$cours' and date='$date' and heure_debut='$heure' and version = 'global $version' ";
 
     $stmt= $bdd->prepare($sql);
 
