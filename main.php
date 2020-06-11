@@ -31,6 +31,12 @@
    }
 
 
+   if (isset($_SESSION['messages'])) {
+
+      echo '<div class="alert alert-warning">'.$_SESSION['messages'].'</div>';
+      unset($_SESSION['messages']);
+   }
+
    ?>
 
 
