@@ -3,7 +3,13 @@
 include('db.php');
 session_start();
 
-$version = $_SESSION['version'];
+if (isset($_SESSION['version'])) {
+    $version = $_SESSION['version'];
+    
+  }else{
+    $version = "schedule1";
+    $_SESSION['version'] = $version;
+  }
 
 function liste_cours_aa($bdd, $niveau, $annee, $bloc)
 {   
@@ -273,7 +279,7 @@ function append_exam($bdd,$cours,$date,$heure,$duree,$comment,$id_cours,$intitul
     $stmt->execute([$date, $duree, $heure, $id_cours, $intitule, $flag_partim, $meanwhile, $id_programme_aa, $bloc, $id_rh, $nom, $prenom, $comment, $cours, $version]);
 
     $annee = $_SESSION['annee'];
-    $sql = "UPDATE cours_aa SET exam = '$version' WHERE code_cours='$cours' AND aa='$annee'";
+    $sql = "UPDATE cours_aa SET exam = 1 WHERE code_cours='$cours' AND aa='$annee'";
 
     $stmt= $bdd->prepare($sql);
 
@@ -353,7 +359,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                 if ($req_fin->rowCount()) {
                     while ($tuple_fin = $req_fin->fetch()) {
 
-                        if($tuple['exam']==$version){
+                        if($tuple['exam']==1){
                             echo "<tr data-partim='false' data-liaison='false' id='".$tuple['code_cours']."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Finalité: ".$tuple_fin['finalite']."'>";
                             echo "<td style='background-color:red;'></td>";
                             echo "<td></td>";
@@ -403,7 +409,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                                                 echo "<td style='color: red;'>Partim: </td>";
                                                 echo "<td style='color: red;'>".$tuple_partim_intitule['partim']."</td></tr>";
                                             }
-                                            if($tuple_partim_intitule['exam']==$version1){
+                                            if($tuple_partim_intitule['exam']==1){
                                                 echo "<tr id='".$code_cours_partim."' draggable='false' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
                                                 echo "<td></td>";
                                                 echo "<td><script> trPartim('".$tuple['code_cours']."') </script></td>";
@@ -420,7 +426,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                 }
                 else {
 
-                    if($tuple['exam']==$version){
+                    if($tuple['exam']==1){
                         echo "<tr id='".$tuple['code_cours']."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
                         echo "<td style='background-color:red;'></td>";
                         echo "<td></td>";
@@ -463,7 +469,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                                 if($req_partim_intitule->rowCount()){
                                     while ($tuple_partim_intitule=$req_partim_intitule->fetch()){
 
-                                        if($tuple_partim_intitule['exam']==$version){
+                                        if($tuple_partim_intitule['exam']==1){
                                             echo "<tr >";
                                             echo "<td></td>";
                                             echo "<td ><script> trPartim('".$tuple['code_cours']."') </script></td>";

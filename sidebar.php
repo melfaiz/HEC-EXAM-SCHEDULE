@@ -43,15 +43,10 @@ if(isset($_SESSION['annee']) && isset($_SESSION['bloc']) && isset($_SESSION['ses
 
 if (isset($_POST['version'])) {
   $_SESSION['version'] = $_POST['version'];
+  $version = $_SESSION['version'];
 }
 
-if (isset($_SESSION['version'])) {
-  $version = $_SESSION['version'];
-  
-}else{
-  $version = "schedule1";
-  $_SESSION['version'] = $version;
-}
+
 
 ?>
 
