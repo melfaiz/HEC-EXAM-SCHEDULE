@@ -26,8 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         $intitule=$tuple['intitule'];
                         $flag_partim=$tuple['flag_partimes'];
                         $meanwhile=$tuple['meanwhile_id_cours_aa'];
-                        $query_programme="SELECT * FROM programme_aa, attrib_cours_aa, rh, cours_aa_pgm WHERE programme_aa.programme_long='$programme' AND programme_aa.aa='$annee' AND attrib_cours_aa.id_cours_aa='$id_cours' AND rh.id_rh=attrib_cours_aa.id_rh";
-                        $req_programme=$bdd->query($query_programme);
+                        $query_programme="SELECT * FROM programme_aa, attrib_cours_aa, rh, cours_aa_pgm WHERE programme_aa.programme_long='$programme' AND programme_aa.aa='$annee' AND attrib_cours_aa.id_cours_aa='$id_cours' AND rh.id_rh=attrib_cours_aa.id_rh AND cours_aa_pgm.id_programme_aa=(SELECT programme_aa.id_programme_aa FROM programme_aa WHERE programme_aa.programme_long='$programme' AND programme_aa.aa='$annee') AND attrib_cours_aa.id_cours_aa=cours_aa_pgm.id_cours_aa";                        $req_programme=$bdd->query($query_programme);
                         if($req_programme->rowCount()){
                                 while ($tuple_programme=$req_programme->fetch()){
                                         $id_programme_aa=$tuple_programme['id_programme_aa'];
@@ -60,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                         }
                                 }
                         }
-                        elseif($id_programme_aa==$tuple_schedule['id_programme_aa'] && $bloc_cours==$tuple_schedule['bloc']){
+                        else if($id_programme_aa==$tuple_schedule['id_programme_aa'] && $bloc_cours==$tuple_schedule['bloc']){
+                                // echo $tuple_schedule['id_programme_aa']." ".$tuple_schedule['bloc'];
                                 $_SESSION['messages'] = "Les étudiants de ce bloc et ce programme sont déjà à l'horaire.";
                                 header('Location:index.php');
                         }
