@@ -267,6 +267,20 @@ function shorten_text($text){
 
 }
 
+function is_exam($bdd,$id_cours){
+
+    global $version;
+
+    $query_version="SELECT * FROM schedule WHERE id_cours_aa = '$id_cours' AND version= '$version' ";
+
+    $req_version=$bdd->query($query_version);
+    if($req_version->rowCount()){
+            return true;
+    }
+    else{
+            return false;
+    }
+}
 
 function append_exam($bdd,$cours,$date,$heure,$duree,$comment,$id_cours,$intitule,$flag_partim,$meanwhile,$id_programme_aa,$bloc,$id_rh,$nom,$prenom){
     
@@ -359,7 +373,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                 if ($req_fin->rowCount()) {
                     while ($tuple_fin = $req_fin->fetch()) {
 
-                        if($tuple['exam']==1){
+                        if(is_exam($bdd,$id_cours)){
                             echo "<tr data-partim='false' data-liaison='false' id='".$tuple['code_cours']."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Finalité: ".$tuple_fin['finalite']."'>";
                             echo "<td style='background-color:red;'></td>";
                             echo "<td></td>";
@@ -401,7 +415,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                                     $req_partim_intitule=$bdd->query($query_partim_intitule);
                                     if($req_partim_intitule->rowCount()){
                                         while ($tuple_partim_intitule=$req_partim_intitule->fetch()){
-                                            if($tuple_partim_intitule['exam']==0){
+                                            if(is_exam($bdd,$cours_partim)){
                                                 echo "<tr id='".$code_cours_partim."' draggable='false' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
                                                 echo "<td></td>";
                                                 echo "<td><script> trPartim('".$tuple['code_cours']."') </script></td>";
@@ -425,8 +439,9 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                     }
                 }
                 else {
+                    $cours_partim=$tuple['id_cours_aa'];
 
-                    if($tuple['exam']==1){
+                    if(is_exam($bdd,$cours_partim)){
                         echo "<tr id='".$tuple['code_cours']."' draggable='true' ondragstart='drag(event)' data-toggle='tooltip' data-placement='right' title=' Programme: ".$tuple['programme_long']."'>";
                         echo "<td style='background-color:red;'></td>";
                         echo "<td></td>";
@@ -469,7 +484,7 @@ function liste_programme_aa($bdd, $annee, $bloc,$session,$programme)
                                 if($req_partim_intitule->rowCount()){
                                     while ($tuple_partim_intitule=$req_partim_intitule->fetch()){
 
-                                        if($tuple_partim_intitule['exam']==1){
+                                        if(is_exam($bdd,$cours_partim)){
                                             echo "<tr >";
                                             echo "<td></td>";
                                             echo "<td ><script> trPartim('".$tuple['code_cours']."') </script></td>";

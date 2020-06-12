@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         // LES TESTS 
 
-        $query_schedule="SELECT * FROM schedule WHERE date = '$date'";
+        $query_schedule="SELECT * FROM schedule WHERE date = '$date' AND version = '$version' ";
         //On a réfléchi pour le truc avec la durée que tu avais dit mais on a pas trouvé comment le mettre dans la requête
         $req_schedule=$bdd->query($query_schedule);
         if($req_schedule->rowCount()){
