@@ -10,18 +10,22 @@ function drag(ev) {
 
 }
 
+// change data-partim to true in partim courses
 function trPartim(code) {
     var tr = document.getElementById(code);
     tr.dataset.partim = true
-    console.log("DONE")
+
 }
 
+// change data-partim to true in Liaison courses
 function trLiaison(code) {
     var tr = document.getElementById(code);
     tr.dataset.liaison = true
-    console.log("DONE")
+
 }
 
+
+// function when dropping course on calender
 function drop(ev, date) {
 
     ev.preventDefault();
@@ -46,8 +50,11 @@ function drop(ev, date) {
 
     var top = ev.target.children[1].children[0]
 
+
+    // append tr to calender when dropping
     top.appendChild(tr);
 
+    // edit popup while insetion
     if (partim == "true") {
 
         var div = document.getElementById('insertModalAlert');
@@ -66,14 +73,7 @@ function drop(ev, date) {
     $('#insertModalCours').val(data);
 
     $('#insertModal').on('hidden.bs.modal', function() {
-
-
-        // top.removeChild(top.lastChild);
-        // updateDiv()
         location.reload();
-
-
-
     })
 
 
@@ -81,34 +81,3 @@ function drop(ev, date) {
 
 
 }
-
-function updateDiv() {
-
-    $('#sidebar_liste_programmes').load(location.href + " #sidebar_liste_programmes");
-
-}
-// function sendData(data) {
-
-//   // sendData({ class : data , time : date ,action:'addcourse' });
-
-//   var XHR = new XMLHttpRequest();
-//   var FD  = new FormData();
-
-//   // Mettez les données dans l'objet FormData
-//   for(name in data) {
-//     FD.append(name, data[name]);
-//   }
-
-
-//   // Definissez ce qui se passe en cas d'erreur
-//   XHR.addEventListener('error', function(event) {
-//     alert('Oups! Quelque chose s\'est mal passé.');
-//   });
-
-//   // Configurez la requête
-//   XHR.open('POST', 'append.php');
-
-//   // Expédiez l'objet FormData ; les en-têtes HTTP sont automatiquement définies
-//   XHR.send(FD);
-//   // location.reload();
-// }

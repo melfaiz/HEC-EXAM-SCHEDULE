@@ -177,6 +177,7 @@ function draw_calendar($bdd,$month,$year){
                     $myDateTime = DateTime::createFromFormat('H:i:s', $exam['heure']);
                     $time = $myDateTime->format('H:i');
                     
+                    // pop up for infos
                     $calendar .= '
                     <div class="modal fade" id="'. $code.$date.$heure .'-popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">

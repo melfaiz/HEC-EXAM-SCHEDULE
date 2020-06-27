@@ -79,8 +79,6 @@
                   <textarea class="form-control" name="comment" id="insertModalComment" rows="3"></textarea>
                </div>
 
-
-
          </div>
          <div class="modal-footer">
          <button type="submit" class="btn btn-primary">Save</button>
@@ -93,6 +91,4 @@
 
 
 
-<?php
-   echo draw_calendar($bdd,$month,$year);
- ?>
+<?php echo draw_calendar($bdd,$month,$year); ?>
